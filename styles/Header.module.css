@@ -1,0 +1,15 @@
+.banner{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #58C5C2;
+    min-height: 100px;
+    min-width: 100%;
+
+}
+.blogTitle{
+    align-self: center;
+    font-size: larger;
+    font-weight: bold;
+    display: block;
+}
