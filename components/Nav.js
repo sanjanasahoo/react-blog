@@ -1,13 +1,13 @@
 import React from 'react'
 import Link from 'next/link'
 import navStyles from '../styles/Nav.module.css'
-const Nav = () => {
+const Nav = ({isLoggedIn}) => {
     return (
         <nav className={navStyles.nav}>
-        <ul>
+        {!isLoggedIn?
+        (<ul>
         <li>
         <Link href="/">Home</Link>
-
         </li>
         <li>
         <Link href="/login">Login</Link>
@@ -17,7 +17,11 @@ const Nav = () => {
         <Link href="/register">Register</Link>
 
         </li>
-        </ul>
+        <li></li>
+        </ul>):
+        (<ul>
+            <li>Logout</li>
+        </ul>)}
         </nav>
     )
 }
