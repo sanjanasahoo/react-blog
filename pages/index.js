@@ -1,48 +1,72 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import Header from '../components/Header'
-import Nav from '../components/Nav'
+
 import PostList from '../components/PostList'
 import Search from '../components/Search'
 import {useState,useEffect} from 'react'
 import useSWR ,{mutate}from 'swr'
+import Nav from '../components/Nav'
+import Header from '../components/Header'
 const fetcher = url => fetch(url).then(r => r.json())
 
 export default  function Home({authors}) {
+  const [token,setToken] = useState(null)
   const [url,setUrl] = useState("https://blogged-for-you.herokuapp.com/api/all-posts?sort=newest")
-  const [authorPosts,setPosts] = useState([])
+  const [authorPosts,setPosts] = useState(null)
+  const [registeredUrl,setRegUrl]= useState('https://blogged-for-you.herokuapp.com/api/posts/')
+  const [reqHeader,setReqHeader] = useState({
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token,
+    },
+  })
   function onSearch(word,selected,sort){
     setUrl(`https://blogged-for-you.herokuapp.com/api/all-posts`+`?sort=${sort}`+`&author=${selected.name}`+`&search=${word}`)
   
+  }
+  function onDelete(id){
+    setRegUrl(`https://blogged-for-you.herokuapp.com/api/posts/${id}`)
+    setReqHeader({
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+      
+    })
   }
   
   const { data, error } = useSWR(url,fetcher)
   useEffect( ()=>{
    const fetchData =async()=>{
-      const token = 'Bearer '+JSON.parse(localStorage.getItem('token')).accessToken;
-      console.log(token)
-      const requestOptions = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token,
-        },
-      };
-      const authorPostsRes = await fetch('https://blogged-for-you.herokuapp.com/api/posts/', requestOptions);
+     setToken (JSON.parse(localStorage.getItem('token')))
+     if(!token) {
+      return
+     }
+     reqHeader.headers.Authorization = token
+     if(reqHeader.method!=='GET') await fetch(registeredUrl, reqHeader);
+     const authorPostsRes = await fetch('https://blogged-for-you.herokuapp.com/api/posts/',{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      },
+     })
      const authorPosts = await authorPostsRes.json();
-     console.log(authorPosts)
      setPosts(authorPosts)
     }
     
      fetchData() 
-    },[]
+    },[registeredUrl,reqHeader,token]
     );
+   
   if(!data ) return <div>Loading...</div>
   
   return (
     <>
+    <Header/>
+    <Nav/>
     <Search onSearch={onSearch} selectdata ={authors}/>
-    <PostList posts={authorPosts.length>0?authorPosts:data}/>
+    <PostList posts={authorPosts?authorPosts:data} onDelete={onDelete} onUpdate={onUpdate}/>
     </>
   )
 }
@@ -50,7 +74,6 @@ export const getStaticProps= async()=>{
 
   const res = await fetch(`https://blogged-for-you.herokuapp.com/api/authors`)
   const authors = await res.json()
-  console.log(authors)
   return {
     props : {authors}
   }

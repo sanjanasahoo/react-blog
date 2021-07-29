@@ -1,11 +1,27 @@
-import React from 'react'
 import Link from 'next/link'
 import navStyles from '../styles/Nav.module.css'
-const Nav = ({isLoggedIn}) => {
+import { useEffect,useState } from 'react'
+
+const Nav = () => {
+    const [key, setKey] = useState(undefined)
+    useEffect(()=>{
+        let key = JSON.parse (localStorage.getItem('isLoggedIn'))
+        setKey(key)
+        }
+   ,[key])
+    if(key){
+        return(
+            <nav className={navStyles.nav}>
+            <ul>
+            <li><Link href="/logout">Logout</Link></li>
+            <li><Link href="/create">Create</Link></li>
+            </ul>
+            </nav>
+        )
+    }
     return (
         <nav className={navStyles.nav}>
-        {!isLoggedIn?
-        (<ul>
+        <ul>
         <li>
         <Link href="/">Home</Link>
         </li>
@@ -18,10 +34,7 @@ const Nav = ({isLoggedIn}) => {
 
         </li>
         <li></li>
-        </ul>):
-        (<ul>
-            <li>Logout</li>
-        </ul>)}
+        </ul>
         </nav>
     )
 }

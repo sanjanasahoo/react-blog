@@ -21,9 +21,6 @@ const Search = ({onSearch,selectdata}) => {
 
         }
         else  e.target.innerText ="New"
-        
-
-        console.log(sortBy)
     }
     const onSubmit =(e)=>{
         e.preventDefault()

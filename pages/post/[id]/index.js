@@ -1,4 +1,3 @@
-import { useRouter } from "next/dist/client/router"
 import Link from "next/link"
 import remark from 'remark'
 import html from 'remark-html'
@@ -23,7 +22,6 @@ export const getServerSideProps = async (context)=>{
     .use(html)
     .process(post.content)
   const contentHtml = processedContent.toString()
-  //console.log(contentHtml)
   post.content = contentHtml
   post.createdAt = date.toDateString()
     return {
