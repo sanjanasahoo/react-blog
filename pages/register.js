@@ -1,4 +1,4 @@
-
+import {toast} from 'react-toastify'; 
 import { useState } from 'react'
 import formStyle from '../styles/Form.module.css'
 export default function Register() {
@@ -12,7 +12,16 @@ export default function Register() {
         };
         fetch('https://blogged-for-you.herokuapp.com/api/register', requestOptions)
             .then(res => res.json())
-            .then(data => console.log(data))
+            .then(data => {
+                if(data.errors){
+                    data.errors.map(error=> toast.error(error.message))
+               }
+        
+               else{
+                toast.success('Registered Succesfully')
+                router.push('/login')
+               }
+             })
     }
     return (
         <div className={formStyle.formDiv}>

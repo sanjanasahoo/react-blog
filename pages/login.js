@@ -1,6 +1,7 @@
 import formStyle from '../styles/Form.module.css'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import {toast} from 'react-toastify'; 
 export default function Login() {
     const router = useRouter()
     const [user,setUser] = useState({email:'',password:''})
@@ -17,7 +18,13 @@ export default function Login() {
             if(data.accessToken){
                 localStorage.setItem('token',JSON.stringify('Bearer '+data.accessToken))
                 localStorage.setItem('isLoggedIn','true')
+                toast.success("Login Successful")
                 router.push('/')
+            }
+            else{
+                if(data.errors){
+                    data.errors.map(error=> toast.error(error.message))
+               }
             }            
         })
         

@@ -20,15 +20,7 @@
     width: 45%;
     align-items: center;
 }
-/* .form-main-h1,.form-main-a{
-    text-align: center;
-    font-weight: bold;
-    color: black;
-} */
-/* .form-main-p{
-    display: flex;
-    justify-content: center;
-} */
+
 .inputDiv{
     display: flex;
     justify-content: space-between;
@@ -36,6 +28,25 @@
     width: 100%;
     padding: 20px;
    
+}
+.searchFormDiv{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 15px;
+}
+.searchForm{
+    display: flex;
+    width: 70%;
+    justify-content: space-around;
+}
+.selectBox{
+    width: 30% !important;
+}
+.searchBox{
+    width: 30%;
+    border: 1px solid hsl(0, 0%, 80%);
+    border-radius: 4px;
 }
 .submitInput{
     padding: 7px;

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Select from 'react-select'
-
+import formStyle from '../styles/Form.module.css'
 const Search = ({onSearch,selectdata}) => {
     const [keyword ,setKeyword] = useState('')
     const [shouldFetch,setShouldFetch] = useState(false)
@@ -29,13 +29,21 @@ const Search = ({onSearch,selectdata}) => {
         setKeyword('')
         
     }
+    const customStyles = {
+        container :(provided)=>({
+            ...provided,
+            width :'30%'
+        }),
+    }
     return (
-        <form onSubmit={onSubmit}>
-            <Select options={options} onChange ={onSelectChange}/>
-            <input type="text" name="keyword" value={keyword} placeholder="Search" onChange={(e)=>{setKeyword(e.target.value)}}></input>
-            <div style={{padding:'10px'}} ><button onClick={onToggleSort}>Newest</button></div>
-            <input style={{padding:'10px'}}type="submit" value="Search"/>
+        <div className={formStyle.searchFormDiv}>
+        <form className={formStyle.searchForm} onSubmit={onSubmit}>
+            <Select styles={customStyles}options={options} onChange ={onSelectChange}/>
+            <input className ={formStyle.searchBox} type="text" name="keyword" value={keyword} placeholder="Search" onChange={(e)=>{setKeyword(e.target.value)}}></input>
+            {/* <div ><button className ={formStyle.submitInput} onClick={onToggleSort}>Newest</button></div> */}
+            <input className='button' type="submit" value="Search"/>
         </form>
+        </div>
     )
 }
 

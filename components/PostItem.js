@@ -7,7 +7,6 @@ const PostItem = ({post,onDelete}) => {
         onDelete(post.id)
     }
     return (
-       
             <Link href="/post/[id]" as={`/post/${post.id}`}>
               <a className={postStyles.card}>
                   <h3 >
@@ -15,7 +14,9 @@ const PostItem = ({post,onDelete}) => {
                       <p>{post.author.name}</p>
                       
                   </h3>
-                  {isloggedIn && <div><button onClick={handleDelete}>delete</button></div>}
+                  {isloggedIn && <div className={postStyles.buttonDiv}><button className="button" onClick={handleDelete}>Delete</button>
+                  <Link passHref href={{pathname:'/create',query:{id:post.id}}}><button className="button">Update</button></Link>
+                  </div>}
               </a>
             </Link>
       
