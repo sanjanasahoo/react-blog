@@ -6,7 +6,7 @@ import { parseISO, format } from 'date-fns'
 const post = ({post}) => {
     return (
         <div className="details-box">
-            <h3>{post.title}</h3> 
+            <h1>{post.title}</h1> 
             <div className="img-div">
             <Image className="blog-image" src={`https://blogged-for-you.herokuapp.com/uploads/${post.imageFileName}`} alt="" height= '400'width='800'/>
             </div>
