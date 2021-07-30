@@ -1,17 +1,16 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Select from 'react-select'
 import formStyle from '../styles/Form.module.css'
-const Search = ({onSearch,selectdata}) => {
+const Search = ({onSearch,selectdata,data}) => {
     const [keyword ,setKeyword] = useState('')
-    const [shouldFetch,setShouldFetch] = useState(false)
-    const [selectOptions,setSelect] = useState({id:'',name:''})
+    const [selectOptions,setSelect] = useState({value:'',label:''})
     const [sortBy,setSortBy] = useState(false)
     const options = selectdata.map(d => ({
         "value" : d.id,
         "label" : d.name
       }))
     const onSelectChange = (e)=>{
-        setSelect({id:e.value,name:e.label})
+        setSelect({value:e.value,label:e.label})
     }
     const onToggleSort =(e)=>{
         e.preventDefault()
@@ -24,11 +23,19 @@ const Search = ({onSearch,selectdata}) => {
     }
     const onSubmit =(e)=>{
         e.preventDefault()
-        setShouldFetch(true)
+        if(keyword ==''&&selectOptions.value==''){
+            alert('Please enter search values')
+            return
+        }
         onSearch(keyword,selectOptions,sortBy?'oldest':'newest')
         setKeyword('')
+        setSelect({label:'',value:''})
         
     }
+    useEffect(()=>{
+        setKeyword(data.word)
+        setSelect({value:data.selected.selectedId,label:data.selected.name})
+    },[data])
     const customStyles = {
         container :(provided)=>({
             ...provided,
@@ -38,7 +45,11 @@ const Search = ({onSearch,selectdata}) => {
     return (
         <div className={formStyle.searchFormDiv}>
         <form className={formStyle.searchForm} onSubmit={onSubmit}>
-            <Select styles={customStyles}options={options} onChange ={onSelectChange}/>
+            <Select styles={customStyles}
+            options={options} 
+            onChange ={onSelectChange} 
+            value={selectOptions}
+            />
             <input className ={formStyle.searchBox} type="text" name="keyword" value={keyword} placeholder="Search" onChange={(e)=>{setKeyword(e.target.value)}}></input>
             {/* <div ><button className ={formStyle.submitInput} onClick={onToggleSort}>Newest</button></div> */}
             <input className='button' type="submit" value="Search"/>

@@ -10,6 +10,7 @@ const fetcher = url => fetch(url).then(r => r.json())
 
 export default  function Home({authors}) {
   const [token,setToken] = useState(null)
+  const [searchData,setData] = useState({word:'',selected:{selectedId:'',name:''}})
   const [url,setUrl] = useState("https://blogged-for-you.herokuapp.com/api/all-posts?sort=newest")
   const [authorPosts,setPosts] = useState(null)
   const defaultRegUrl = 'https://blogged-for-you.herokuapp.com/api/posts/'
@@ -23,8 +24,8 @@ export default  function Home({authors}) {
   const [registeredUrl,setRegUrl]= useState(defaultRegUrl)
   const [reqHeader,setReqHeader] = useState(defaultRegHeader)
   function onSearch(word,selected,sort){
-    setUrl(`https://blogged-for-you.herokuapp.com/api/all-posts`+`?sort=${sort}`+`&author=${selected.name}`+`&search=${word}`)
-  
+    setUrl(`https://blogged-for-you.herokuapp.com/api/all-posts`+`?sort=${sort}`+`&author=${selected.label}`+`&search=${word}`)
+    setData({word,selected:{selectedId:selected.value,name:selected.label}})
   }
   function onDelete(id){
     setRegUrl(`https://blogged-for-you.herokuapp.com/api/posts/${id}`)
@@ -69,7 +70,7 @@ export default  function Home({authors}) {
     <>
     <Header/>
     <Nav/>
-    <Search onSearch={onSearch} selectdata ={authors}/>
+    <Search onSearch={onSearch} selectdata ={authors}data={searchData} />
     <PostList posts={authorPosts?authorPosts:data} onDelete={onDelete} />
     </>
   )
