@@ -3,7 +3,7 @@ import Select from 'react-select'
 import formStyle from '../styles/Form.module.css'
 const Search = ({onSearch,selectdata,data}) => {
     const [keyword ,setKeyword] = useState('')
-    const [selectOptions,setSelect] = useState({value:'',label:''})
+    const [selectOptions,setSelect] = useState({value:'',label:'Select Author'})
     const [sortBy,setSortBy] = useState(false)
     const options = selectdata.map(d => ({
         "value" : d.id,

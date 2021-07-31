@@ -18,12 +18,13 @@ export default function Login() {
             if(data.accessToken){
                 localStorage.setItem('token',JSON.stringify('Bearer '+data.accessToken))
                 localStorage.setItem('isLoggedIn','true')
+                localStorage.setItem('userId',data.user.id)
                 toast.success("Login Successful")
                 router.push('/')
             }
             else{
-                if(data.errors){
-                    data.errors.map(error=> toast.error(error.message))
+                if(data.message){
+                   toast.error(data.message)
                }
             }            
         })
