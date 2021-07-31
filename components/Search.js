@@ -14,25 +14,24 @@ const Search = ({onSearch,selectdata,data}) => {
     }
     const onToggleSort =(e)=>{
         e.preventDefault()
-        setSortBy(sortBy=>!sortBy)
+        setSortBy((prevsort)=>!prevsort)
         if(sortBy){
             e.target.innerText ="Oldest"
-
         }
-        else  e.target.innerText ="New"
+        else  e.target.innerText ="Newest"
     }
     const onSubmit =(e)=>{
         e.preventDefault()
-        if(keyword ==''&&selectOptions.value==''){
-            alert('Please enter search values')
-            return
-        }
-        onSearch(keyword,selectOptions,sortBy?'oldest':'newest')
+        onSearch(keyword,selectOptions,!sortBy)
         setKeyword('')
         setSelect({label:'',value:''})
-        
     }
     useEffect(()=>{
+        const button = document.getElementById('sort')
+        if(data.sort) {
+            button.innerHTML='Oldest'
+            setSortBy(true)
+        }
         setKeyword(data.word)
         setSelect({value:data.selected.selectedId,label:data.selected.name})
     },[data])
@@ -51,7 +50,7 @@ const Search = ({onSearch,selectdata,data}) => {
             value={selectOptions}
             />
             <input className ={formStyle.searchBox} type="text" name="keyword" value={keyword} placeholder="Search" onChange={(e)=>{setKeyword(e.target.value)}}></input>
-            {/* <div ><button className ={formStyle.submitInput} onClick={onToggleSort}>Newest</button></div> */}
+            <div ><button id ="sort" className ={formStyle.submitInput} onClick={onToggleSort}>Newest</button></div>
             <input className='button' type="submit" value="Search"/>
         </form>
         </div>

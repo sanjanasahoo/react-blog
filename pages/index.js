@@ -10,7 +10,7 @@ const fetcher = url => fetch(url).then(r => r.json())
 
 export default  function Home({authors}) {
   const [token,setToken] = useState(null)
-  const [searchData,setData] = useState({word:'',selected:{selectedId:'',name:''}})
+  const [searchData,setData] = useState({word:'',selected:{selectedId:'',name:''},sort:false})
   const [url,setUrl] = useState("https://blogged-for-you.herokuapp.com/api/all-posts?sort=newest")
   const [authorPosts,setPosts] = useState(null)
   const defaultRegUrl = 'https://blogged-for-you.herokuapp.com/api/posts/'
@@ -24,8 +24,9 @@ export default  function Home({authors}) {
   const [registeredUrl,setRegUrl]= useState(defaultRegUrl)
   const [reqHeader,setReqHeader] = useState(defaultRegHeader)
   function onSearch(word,selected,sort){
-    setUrl(`https://blogged-for-you.herokuapp.com/api/all-posts`+`?sort=${sort}`+`&author=${selected.label}`+`&search=${word}`)
-    setData({word,selected:{selectedId:selected.value,name:selected.label}})
+   let sortBy = sort ? 'oldest' :'newest'
+    setUrl(`https://blogged-for-you.herokuapp.com/api/all-posts`+`?sort=${sortBy}`+`&author=${selected.label}`+`&search=${word}`)
+    setData({word,selected:{selectedId:selected.value,name:selected.label},sort})
   }
   function onDelete(id){
     setRegUrl(`https://blogged-for-you.herokuapp.com/api/posts/${id}`)
