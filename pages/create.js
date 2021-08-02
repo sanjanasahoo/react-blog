@@ -2,17 +2,16 @@ import router, { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import formStyle from '../styles/PostForm.module.css'
+import {fetchAPIPost, putPostData} from '../api'
 export default function Create() {
+    console.log(process.env.REG_USERS_POST_URL)
     const { query } = useRouter()
     const [postData, setPostData] = useState(null)
     const [hasQuery, setQuery] = useState(false)
     useEffect(() => {
         async function fetchData() {
             if (query.id) {
-                const postDataRes = await fetch(`https://blogged-for-you.herokuapp.com/api/posts/${query.id}`, {
-                    method: 'GET'
-                })
-                const postData = await postDataRes.json()
+                const postData = await fetchAPIPost(query.id)
                 setPostData(postData)
                 setQuery(true)
             }
@@ -26,7 +25,7 @@ export default function Create() {
         formData.append('content', e.target.content.value)
         formData.append('cover', e.target.img.files[0])
         const token = JSON.parse(localStorage.getItem('token'))
-        let url = 'https://blogged-for-you.herokuapp.com/api/posts/'
+        let url = process.env.API_REG_USER_URL
         let requestOptions = {
             method: 'POST',
             body: formData,
@@ -45,8 +44,7 @@ export default function Create() {
         }
         else {
             let newRequestOptions = { ...requestOptions, method: 'PUT' }
-            const updatedPostRes = await fetch(`${url}${query.id}`, newRequestOptions)
-            const updatedPost = await updatedPostRes.json()
+            const updatedPost = await  putPostData(newRequestOptions,query.id)
             if (updatedPost.errors) toast.error(newPost.errors[0].message)
             else {
                 toast.success("Post updated Successfully")

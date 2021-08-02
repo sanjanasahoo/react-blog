@@ -8,7 +8,7 @@ const post = ({post}) => {
         <div className="details-box">
             <h1>{post.title}</h1> 
             <div className="img-div">
-            <Image className="blog-image" src={`https://blogged-for-you.herokuapp.com/uploads/${post.imageFileName}`} alt="" height= '400'width='800'/>
+            <Image className="blog-image" src={`${process.env.API_IMAGE_URL}${post.imageFileName}`} alt="" height= '400'width='800'/>
             </div>
             <p>{post.createdAt}</p>
             <div className="details" dangerouslySetInnerHTML={{ __html: post.content }} />
@@ -18,7 +18,7 @@ const post = ({post}) => {
     )
 }
 export const getServerSideProps = async (context)=>{
-    const res = await fetch(`https://blogged-for-you.herokuapp.com/api/posts/${context.params.id}`)
+    const res = await fetch(`${process.env.API_REG_USER_URL}${context.params.id}`)
     const post = await res.json()
     const date = parseISO(post.createdAt.toString())
     const processedContent = await remark()

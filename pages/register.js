@@ -10,7 +10,7 @@ export default function Register() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
         };
-        fetch('https://blogged-for-you.herokuapp.com/api/register', requestOptions)
+        fetch(process.env.API_REGISTER_URL, requestOptions)
             .then(res => res.json())
             .then(data => {
                 if(data.errors){

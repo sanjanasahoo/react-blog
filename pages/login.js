@@ -12,7 +12,7 @@ export default function Login() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
         };
-        fetch("https://blogged-for-you.herokuapp.com/api/login",requestOptions)
+        fetch(process.env.API_LOGIN_URL,requestOptions)
         .then(res=>res.json())
         .then(data=>{
             if(data.accessToken){
