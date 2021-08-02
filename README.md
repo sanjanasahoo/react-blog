@@ -25,7 +25,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Technologies used
 
 1. Node
-2. JavaSCript
+2. JavaScript
 3. React
 4. NEXTJS
 5. SWR
